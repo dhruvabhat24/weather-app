@@ -105,7 +105,7 @@ const WeatherApp = () => {
         </div>
         <div className="element">
           <img src={pressure_icon} alt="" className="icon" />
-          <div claqssName="data">
+          <div className="data">
             <div className="pressure"></div>
             <div className="text">Pressure</div>
           </div>
