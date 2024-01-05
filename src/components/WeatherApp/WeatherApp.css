@@ -21,7 +21,6 @@ body {
   align-items: center;
   max-width: 320px;
   margin: 10px auto;
-  height: 35px;
 }
 
 .cityInput {
@@ -90,7 +89,6 @@ body {
 @media screen and (min-width: 620px) {
   .main-info {
     display: flex;
-    /* justify-content: space-between; */
     justify-content: center;
     align-items: center;
     margin: 40px;
@@ -108,7 +106,7 @@ body {
   }
 
   .top-bar {
-    height: 45px;
+    height: 35px;
   }
 
   .cityInput {
