@@ -8,9 +8,12 @@ import cloud_icon from "../assets/cloud.png";
 import rain_icon from "../assets/rain.png";
 import snow_icon from "../assets/snow.png";
 import wind_icon from "../assets/wind.png";
+import wind_icon2 from "../assets/wind.svg";
 import humidity_icon from "../assets/humidity.png";
+import humidity_icon2 from "../assets/humidity.svg";
 import drizzle_icon from "../assets/drizzle.png";
 import pressure_icon from "../assets/pressure.png";
+import pressure_icon2 from "../assets/pressure.svg";
 const WeatherApp = () => {
   let api_key = "e4d474a322c0877f50ad1ce9bfa13d83";
 
@@ -91,7 +94,7 @@ const WeatherApp = () => {
   return (
     <div className="container">
       <div className="top-bar">
-        <input type="text" className="cityInput" placeholder="search" />
+        <input type="text" className="cityInput" placeholder="Search" />
         <div
           className="search-icon"
           onClick={() => {
@@ -112,21 +115,21 @@ const WeatherApp = () => {
 
       <div className="data-container">
         <div className="element">
-          <img src={humidity_icon} alt="" className="icon" />
+          <img src={humidity_icon2} alt="" className="icon" />
           <div className="data">
             <div className="humidity-percent"></div>
             <div className="text">Humidity</div>
           </div>
         </div>
         <div className="element">
-          <img src={wind_icon} alt="" className="icon" />
+          <img src={wind_icon2} alt="" className="icon" />
           <div className="data">
             <div className="wind-rate"></div>
             <div className="text">Wind Speed</div>
           </div>
         </div>
         <div className="element">
-          <img src={pressure_icon} alt="" className="icon" />
+          <img src={pressure_icon2} alt="" className="icon" />
           <div className="data">
             <div className="pressure"></div>
             <div className="text">Pressure</div>

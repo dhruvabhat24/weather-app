@@ -11,7 +11,7 @@ body {
   background: linear-gradient(180deg, #0077b6 0%, #0077b6 100%);
   margin: 0px auto;
   border-radius: 15px;
-  padding: 20px;
+  padding: 40px 20px;
   flex-grow: 1;
 }
 
@@ -77,20 +77,16 @@ body {
 .element {
   margin: auto;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  flex-direction: column;
   gap: 12px;
+  text-align: center;
 }
+
 .data {
-  /* font-size: 34px; */
-  font-weight: 400;
+  font-weight: 500;
 }
+
 .text {
-  font-size: 20px;
-  font-weight: 400;
-}
-.icon {
-  margin-top: 10px;
-}
-.pressure {
-  margin-top: 6px;
+  font-weight: 500;
 }
