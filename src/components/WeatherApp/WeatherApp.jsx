@@ -67,6 +67,8 @@ const WeatherApp = () => {
       const response = await fetch(url);
       const data = await response.json();
       
+      if (!response.ok) return;
+
       const humidityElement = document.querySelector(".humidity-percent");
       const windElement = document.querySelector(".wind-rate");
       const pressureElement = document.querySelector(".pressure");
