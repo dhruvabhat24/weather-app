@@ -21,6 +21,7 @@ body {
   align-items: center;
   max-width: 320px;
   margin: 10px auto;
+  height: 35px;
 }
 
 .cityInput {
@@ -35,6 +36,7 @@ body {
   font-weight: 400;
   width: 70%;
   min-width: 160px;
+  height: 100%;
 }
 
 .search-icon {
@@ -83,4 +85,33 @@ body {
   gap: 15px;
   text-align: center;
   font-weight: 500;
+}
+
+@media screen and (min-width: 620px) {
+  .main-info {
+    display: flex;
+    /* justify-content: space-between; */
+    justify-content: center;
+    align-items: center;
+    margin: 40px;
+    gap: 25%;
+  }
+
+  .data-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .element {
+    font-size: larger;
+    gap: 5px;
+  }
+
+  .top-bar {
+    height: 45px;
+  }
+
+  .cityInput {
+    font-size: 1.5rem;
+  }
 }

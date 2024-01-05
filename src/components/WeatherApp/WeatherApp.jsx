@@ -104,35 +104,39 @@ const WeatherApp = () => {
           <img src={search_icon2} alt="search" />
         </div>
       </div>
-      <div className="weather-image">
-        <img src={wicon} alt="cloud" />
-      </div>
 
-      <div className="weather-info">
-        <div className="weather-temp"></div>
-        <div className="weather-location"></div>
-      </div>
-
-      <div className="data-container">
-        <div className="element">
-          <img src={humidity_icon2} alt="" className="icon" />
-          <div className="data">
-            <div className="humidity-percent"></div>
-            <div className="text">Humidity</div>
+      <div className="main-info">
+        <div>
+          <div className="weather-image">
+            <img src={wicon} alt="cloud" />
+          </div>
+          <div className="weather-info">
+            <div className="weather-temp"></div>
+            <div className="weather-location"></div>
           </div>
         </div>
-        <div className="element">
-          <img src={wind_icon2} alt="" className="icon" />
-          <div className="data">
-            <div className="wind-rate"></div>
-            <div className="text">Wind Speed</div>
+
+        <div className="data-container">
+          <div className="element">
+            <img src={humidity_icon2} alt="" className="icon" />
+            <div className="data">
+              <div className="humidity-percent"></div>
+              <div className="text">Humidity</div>
+            </div>
           </div>
-        </div>
-        <div className="element">
-          <img src={pressure_icon2} alt="" className="icon" />
-          <div className="data">
-            <div className="pressure"></div>
-            <div className="text">Pressure</div>
+          <div className="element">
+            <img src={wind_icon2} alt="" className="icon" />
+            <div className="data">
+              <div className="wind-rate"></div>
+              <div className="text">Wind Speed</div>
+            </div>
+          </div>
+          <div className="element">
+            <img src={pressure_icon2} alt="" className="icon" />
+            <div className="data">
+              <div className="pressure"></div>
+              <div className="text">Pressure</div>
+            </div>
           </div>
         </div>
       </div>
