@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./WeatherApp.css";
 
 import search_icon from "../assets/search.png";
+import search_icon2 from "../assets/search.svg";
 import clear_icon from "../assets/clear.png";
 import cloud_icon from "../assets/cloud.png";
 import rain_icon from "../assets/rain.png";
@@ -97,17 +98,19 @@ const WeatherApp = () => {
             search();
           }}
         >
-          <div>
-            <img src={search_icon} alt="search" />
-          </div>
+          <img src={search_icon2} alt="search" />
         </div>
       </div>
       <div className="weather-image">
         <img src={wicon} alt="cloud" />
       </div>
-      <div className="weather-temp"></div>
-      <div className="weather-location"></div>
-      <div class="data-container">
+
+      <div className="weather-info">
+        <div className="weather-temp"></div>
+        <div className="weather-location"></div>
+      </div>
+
+      <div className="data-container">
         <div className="element">
           <img src={humidity_icon} alt="" className="icon" />
           <div className="data">
@@ -117,7 +120,7 @@ const WeatherApp = () => {
         </div>
         <div className="element">
           <img src={wind_icon} alt="" className="icon" />
-          <div claqssName="data">
+          <div className="data">
             <div className="wind-rate"></div>
             <div className="text">Wind Speed</div>
           </div>

@@ -1,20 +1,10 @@
 body {
   background-image: linear-gradient(180deg, #ecc5d2 40%, #6daae7 100%);
-  /* display: flex; */
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   margin-top: 60px;
 }
 
 .container {
-  /* width: 607px;
-  height: 829px;
-  margin: 0 auto;
-  margin-top: 10px;
-  border-radius: 12px;
-  background-image: linear-gradient(180deg, #0077b6 0%, #0077b6 100%); */
-
   width: 80%;
   max-width: 768px;
   /* min-width: 400px; */
@@ -29,7 +19,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 360px;
+  max-width: 380px;
+  min-width: 320px;
   margin: 10px auto;
 }
 
@@ -49,41 +40,39 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 78px; */
-  /* height: 78px; */
-  /* height: max-content; */
-  width: 30px;
-  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
   background: #ebffce;
   padding: 5px;
   border-radius: 50%;
-  /* border-radius: 40px; */
   cursor: pointer;
 }
+
 .weather-image {
-  margin-top: 29px;
   display: flex;
   justify-content: center;
+  margin: 30px auto;
 }
-.weather-temp {
+
+.weather-image img {
+  width: 120px;
+}
+
+.weather-info {
   display: flex;
+  gap: 40px;
   justify-content: center;
   color: white;
-  font-size: 120px;
+  font-size: 36px;
   font-weight: 400;
 }
-.weather-location {
-  display: flex;
-  justify-content: center;
-  color: white;
-  font-size: 60px;
-  font-weight: 400;
-}
+
 .data-container {
   margin-top: 50px;
   color: white;
   display: flex;
   justify-content: center;
+  /* max-width: 100%; */
 }
 .element {
   margin: auto;
@@ -92,7 +81,7 @@ body {
   gap: 12px;
 }
 .data {
-  font-size: 34px;
+  /* font-size: 34px; */
   font-weight: 400;
 }
 .text {
