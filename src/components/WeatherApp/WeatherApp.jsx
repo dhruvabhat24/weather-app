@@ -28,12 +28,12 @@ const WeatherApp = () => {
       setWicon(rain_icon);
     } else if (iconID === "10d" || iconID === "10n") {
       setWicon(rain_icon);
-    } else if (iconID === "13d" ||iconID === "13n") {
+    } else if (iconID === "13d" || iconID === "13n") {
       setWicon(snow_icon);
     } else {
       setWicon(clear_icon);
     }
-  }
+  };
 
   const search = async () => {
     const element = document.getElementsByClassName("cityInput");
@@ -54,25 +54,25 @@ const WeatherApp = () => {
     pressure[0].innerHTML = data.main.pressure + " hPA";
     temperature[0].innerHTML = Math.floor(data.main.temp) + "°C";
     location[0].innerHTML = data.name;
-    
+
     setIconWithIconID(data.weather[0].icon);
   };
 
   const showWeatherCurrentLocation = async () => {
     const geolocation = navigator.geolocation;
     if (!geolocation) return;
-    
+
     geolocation.getCurrentPosition(async (position) => {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=Metric&appid=${api_key}`;
       const response = await fetch(url);
       const data = await response.json();
-      
+
       const humidityElement = document.querySelector(".humidity-percent");
       const windElement = document.querySelector(".wind-rate");
       const pressureElement = document.querySelector(".pressure");
       const temperatureElement = document.querySelector(".weather-temp");
       const locationElement = document.querySelector(".weather-location");
-    
+
       humidityElement.innerText = data.main.humidity + "%";
       windElement.innerText = Math.floor(data.wind.speed) + "km/h";
       pressureElement.innerText = data.main.pressure + " hPA";
@@ -97,7 +97,9 @@ const WeatherApp = () => {
             search();
           }}
         >
-          <img src={search_icon} alt="search" />
+          <div>
+            <img src={search_icon} alt="search" />
+          </div>
         </div>
       </div>
       <div className="weather-image">
