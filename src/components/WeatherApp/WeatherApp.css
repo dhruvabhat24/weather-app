@@ -1,13 +1,13 @@
 body {
   background-image: linear-gradient(180deg, #ecc5d2 40%, #6daae7 100%);
+  min-width: 320px;
   min-height: 100vh;
-  margin-top: 60px;
+  margin-top: 80px;
 }
 
 .container {
   width: 80%;
   max-width: 768px;
-  /* min-width: 400px; */
   background: linear-gradient(180deg, #0077b6 0%, #0077b6 100%);
   margin: 0px auto;
   border-radius: 15px;
@@ -19,8 +19,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 380px;
-  min-width: 320px;
+  max-width: 320px;
   margin: 10px auto;
 }
 
@@ -34,6 +33,8 @@ body {
   color: #626262;
   font-size: 20px;
   font-weight: 400;
+  width: 70%;
+  min-width: 160px;
 }
 
 .search-icon {
@@ -72,21 +73,14 @@ body {
   color: white;
   display: flex;
   justify-content: center;
-  /* max-width: 100%; */
 }
+
 .element {
   margin: auto;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
   text-align: center;
-}
-
-.data {
-  font-weight: 500;
-}
-
-.text {
   font-weight: 500;
 }
