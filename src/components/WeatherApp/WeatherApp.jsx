@@ -87,7 +87,7 @@ const WeatherApp = () => {
 
   useEffect(() => {
     showWeatherCurrentLocation();
-  });
+  }, []);
 
   return (
     <div className="container">
