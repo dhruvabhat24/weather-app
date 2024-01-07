@@ -15,7 +15,7 @@ import drizzle_icon from "../assets/drizzle.png";
 import pressure_icon from "../assets/pressure.png";
 import pressure_icon2 from "../assets/pressure.svg";
 const WeatherApp = () => {
-  let api_key = "e4d474a322c0877f50ad1ce9bfa13d83";
+  let api_key = process.env.REACT_APP_API_KEY;
 
   const [wicon, setWicon] = useState(cloud_icon);
 
