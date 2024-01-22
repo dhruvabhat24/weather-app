@@ -62,15 +62,22 @@ body {
 
 .weather-info {
   display: flex;
+  flex-direction: column;
   gap: 40px;
   justify-content: center;
   color: white;
+  font-size: 24px;
   font-size: 36px;
   font-weight: 400;
+  margin-top: 15px;
+}
+
+.weather-info > * {
+  margin-top: 5px; 
 }
 
 .data-container {
-  margin-top: 50px;
+  margin-top: 20px;
   color: white;
   display: flex;
   justify-content: center;
@@ -112,4 +119,19 @@ body {
   .cityInput {
     font-size: 1.5rem;
   }
+}
+
+.time-format-button {
+  background-color: #4caf50; /* Green background color */
+  color: white; /* White text color */
+  padding: 10px 25px; /* Padding for better appearance */
+  font-size: 16px; /* Font size */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.time-format-button:hover {
+  background-color: #45a049; /* Darker green on hover */
 }
