@@ -25,6 +25,12 @@ const WeatherApp = () => {
     currentDay: "",
   });
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      search();
+    }
+  };
+
   const setIconWithIconID = (iconID) => {
     if (iconID === "01d" || iconID === "01n") {
       setWicon(clear_icon);
@@ -140,7 +146,7 @@ const WeatherApp = () => {
   return (
     <div className="container">
       <div className="top-bar">
-        <input type="text" className="cityInput" placeholder="Search" />
+        <input type="text" className="cityInput" placeholder="Search" onKeyDown={handleKeyPress} />
         <div
           className="search-icon"
           onClick={() => {
