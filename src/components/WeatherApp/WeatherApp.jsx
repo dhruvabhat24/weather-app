@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import "./WeatherApp.css";
 import search_icon2 from "../assets/search.svg";
 import clear_icon from "../assets/clear.png";
@@ -23,6 +23,11 @@ const WeatherApp = () => {
     currentTime: "",
     currentDate: "",
     currentDay: "",
+  });
+
+  const element = useRef();
+  useEffect(() => {
+    console.log(element.current);
   });
 
   const handleKeyPress = (event) => {
@@ -75,19 +80,18 @@ const WeatherApp = () => {
   };
 
   const search = async () => {
-    const element = document.getElementsByClassName("cityInput");
-    if (element[0].value === "") {
+    if (element.current.value === "") {
       return 0;
     }
-  
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${element[0].value}&units=Metric&appid=${api_key}`;
-  
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${element.current.value}&units=Metric&appid=${api_key}`;
+
     try {
       let response = await fetch(url);
       let data = await response.json();
-  
+
       console.log("Weather API response:", data);
-  
+
       setWeatherData({
         humidity: data.main.humidity + "%",
         windSpeed: Math.floor(data.wind.speed) + "km/h",
@@ -97,9 +101,11 @@ const WeatherApp = () => {
         timezone: data.timezone,
         currentTime: formatDateTime(new Date(data.dt * 1000), is24HourFormat),
         currentDate: new Date(data.dt * 1000).toLocaleDateString(),
-        currentDay: new Date(data.dt * 1000).toLocaleDateString('en-US', { weekday: 'long' }),
+        currentDay: new Date(data.dt * 1000).toLocaleDateString("en-US", {
+          weekday: "long",
+        }),
       });
-  
+
       setIconWithIconID(data.weather[0].icon);
     } catch (error) {
       console.error("Error fetching weather data:", error);
@@ -109,16 +115,16 @@ const WeatherApp = () => {
   const showWeatherCurrentLocation = useCallback(async () => {
     const geolocation = navigator.geolocation;
     if (!geolocation) return;
-  
+
     geolocation.getCurrentPosition(async (position) => {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=Metric&appid=${api_key}`;
-  
+
       try {
         const response = await fetch(url);
         const data = await response.json();
-  
+
         console.log("Weather API response:", data);
-  
+
         setWeatherData({
           humidity: data.main.humidity + "%",
           windSpeed: Math.floor(data.wind.speed) + "km/h",
@@ -128,16 +134,17 @@ const WeatherApp = () => {
           timezone: data.timezone,
           currentTime: new Date(data.dt * 1000).toLocaleTimeString(),
           currentDate: new Date(data.dt * 1000).toLocaleDateString(),
-          currentDay: new Date(data.dt * 1000).toLocaleDateString('en-US', { weekday: 'long' }),
+          currentDay: new Date(data.dt * 1000).toLocaleDateString("en-US", {
+            weekday: "long",
+          }),
         });
-  
+
         setIconWithIconID(data.weather[0].icon);
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
     });
   }, [api_key]);
-  
 
   useEffect(() => {
     showWeatherCurrentLocation();
@@ -146,7 +153,13 @@ const WeatherApp = () => {
   return (
     <div className="container">
       <div className="top-bar">
-        <input type="text" className="cityInput" placeholder="Search" onKeyDown={handleKeyPress} />
+        <input
+          type="text"
+          className="cityInput"
+          placeholder="Search"
+          onKeyDown={handleKeyPress}
+          ref={element}
+        />
         <div
           className="search-icon"
           onClick={() => {
@@ -166,8 +179,12 @@ const WeatherApp = () => {
             <div className="weather-temp">{weatherData.temperature}</div>
             <div className="weather-location">{weatherData.location}</div>
             <div className="weather-time">
-            <button className="time-format-button" onClick={toggleTimeFormat}>Toggle Time Format</button>
-              <p></p>{weatherData.currentTime}</div>
+              <button className="time-format-button" onClick={toggleTimeFormat}>
+                Toggle Time Format
+              </button>
+              <p></p>
+              {weatherData.currentTime}
+            </div>
             <div className="weather-date">{weatherData.currentDate}</div>
             <div className="weather-day">{weatherData.currentDay}</div>
           </div>
