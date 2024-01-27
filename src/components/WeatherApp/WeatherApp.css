@@ -1,5 +1,5 @@
 body {
-  background-image: linear-gradient(180deg, #ecc5d2 40%, #6daae7 100%);
+  background-image: linear-gradient(180deg, #232522 40%, #292a2c 100%);
   min-width: 320px;
   min-height: 100vh;
   margin-top: 80px;
@@ -8,9 +8,9 @@ body {
 .container {
   width: 80%;
   max-width: 768px;
-  background: linear-gradient(180deg, #0077b6 0%, #0077b6 100%);
+  background: linear-gradient(180deg, #393939 0%, #5858589e 100%);
   margin: 0px auto;
-  border-radius: 15px;
+  border-radius: 40px;
   padding: 40px 20px;
   flex-grow: 1;
 }
@@ -64,7 +64,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  justify-content: center;
+  justify-content: space-between;
   color: white;
   font-size: 24px;
   font-size: 36px;
@@ -76,11 +76,19 @@ body {
   margin-top: 5px; 
 }
 
+.sun-temp-info {
+  display: flex;
+  justify-content: space-between;
+}
+
 .data-container {
   margin-top: 20px;
   color: white;
   display: flex;
+  flex-direction: column;
+  position: relative;
   justify-content: center;
+  padding: 5%;
 }
 
 .element {
@@ -91,6 +99,18 @@ body {
   gap: 15px;
   text-align: center;
   font-weight: 500;
+}
+
+.title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: medium;
+  color: #00ff73;
+}
+
+.data {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: large;
+  color: #eeff00;
 }
 
 @media screen and (min-width: 620px) {
