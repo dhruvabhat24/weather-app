@@ -5,15 +5,24 @@ import clear_icon from "../assets/clear.png";
 import cloud_icon from "../assets/cloud.png";
 import rain_icon from "../assets/rain.png";
 import snow_icon from "../assets/snow.png";
-import wind_icon2 from "../assets/wind.svg";
-import humidity_icon2 from "../assets/humidity.svg";
 import drizzle_icon from "../assets/drizzle.png";
-import pressure_icon2 from "../assets/pressure.svg";
+import Humidity from "./Humidity";
+import WindSpeed from "./WindSpeed";
+import Pressure from "./Pressure";
+import SunInfo from "./SunInfo";
+import TempInfo from "./TempInfo";
 
 const WeatherApp = () => {
   const api_key = process.env.REACT_APP_API_KEY;
   const [wicon, setWicon] = useState(cloud_icon);
   const [is24HourFormat, setIs24HourFormat] = useState(true);
+  const [tempData, setTemp] = useState({
+    temp: "",
+  });
+  const [sunInfoData, setSuninfo] = useState({
+    sunriseTime: "",
+    sunsetTime: "",
+  });
   const [weatherData, setWeatherData] = useState({
     humidity: "",
     windSpeed: "",
@@ -105,6 +114,13 @@ const WeatherApp = () => {
           weekday: "long",
         }),
       });
+      setSuninfo({
+        sunriseTime: "6:45",
+        sunsetTime: "6:10",
+      });
+      setTemp({
+        temp: "4°C",
+      });
 
       setIconWithIconID(data.weather[0].icon);
     } catch (error) {
@@ -140,6 +156,23 @@ const WeatherApp = () => {
         });
 
         setIconWithIconID(data.weather[0].icon);
+
+        //personalize below as you want
+
+        // const sunResponse = await fetch('here set the url you want to get info');
+        // const sunData = await sunResponse.json();
+        // setSuninfo({
+        //   sunriseTime: sunData.results.sunrise,
+        //   sunsetTime: sunData.results.sunset,
+        // });
+        setSuninfo({
+          sunriseTime: "",
+          sunsetTime: "",
+        });
+        setTemp({
+          temp: "",
+        });
+        // after that delet below
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
@@ -176,41 +209,28 @@ const WeatherApp = () => {
             <img src={wicon} alt="cloud" />
           </div>
           <div className="weather-info">
-            <div className="weather-temp">{weatherData.temperature}</div>
-            <div className="weather-location">{weatherData.location}</div>
-            <div className="weather-time">
+            <div className="weather-temp data">{weatherData.temperature}</div>
+            <div className="weather-location data">{weatherData.location}</div>
+            <div className="weather-time data">
               <button className="time-format-button" onClick={toggleTimeFormat}>
                 Toggle Time Format
               </button>
               <p></p>
               {weatherData.currentTime}
             </div>
-            <div className="weather-date">{weatherData.currentDate}</div>
-            <div className="weather-day">{weatherData.currentDay}</div>
+            <div className="weather-date title">{weatherData.currentDate}</div>
+            <div className="weather-day title">{weatherData.currentDay}</div>
           </div>
         </div>
-
         <div className="data-container">
-          <div className="element">
-            <img src={humidity_icon2} alt="" className="icon" />
-            <div className="data">
-              <div className="humidity-percent">{weatherData.humidity}</div>
-              <div className="text">Humidity</div>
-            </div>
+          <div className="weather-info">
+            <Humidity humidity={weatherData.humidity} />
+            <WindSpeed windSpeed={weatherData.windSpeed} />
+            <Pressure pressure={weatherData.pressure} />
           </div>
-          <div className="element">
-            <img src={wind_icon2} alt="" className="icon" />
-            <div className="data">
-              <div className="wind-rate">{weatherData.windSpeed}</div>
-              <div className="text">Wind Speed</div>
-            </div>
-          </div>
-          <div className="element">
-            <img src={pressure_icon2} alt="" className="icon" />
-            <div className="data">
-              <div className="pressure">{weatherData.pressure}</div>
-              <div className="text">Pressure</div>
-            </div>
+          <div className="sun-temp-info">
+            <SunInfo sunrise={sunInfoData.sunriseTime} sunset={sunInfoData.sunsetTime} />
+            <TempInfo temp={tempData.temp}/>
           </div>
         </div>
       </div>
