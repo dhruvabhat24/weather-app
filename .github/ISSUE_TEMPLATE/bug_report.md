@@ -7,6 +7,6 @@ assignees: ''
 
 ---
 
-Wheredi you find this bug ?
+Where did you find this bug ?
 
 Explain about the bug.
