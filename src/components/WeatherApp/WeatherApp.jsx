@@ -18,7 +18,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const WeatherApp = () => {
   const api_key = process.env.REACT_APP_API_KEY;
-  const api_key2 = process.env.REACT_APP_WEATHERBIT_API_KEY
+  const api_key2 = process.env.REACT_APP_WEATHERBIT_API_KEY;
   const [wicon, setWicon] = useState(cloud_icon);
   const [is24HourFormat, setIs24HourFormat] = useState(true);
   const [loading, setLoading] = useState(false);
