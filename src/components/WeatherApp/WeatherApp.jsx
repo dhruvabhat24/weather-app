@@ -349,8 +349,8 @@ const WeatherApp = () => {
             <Pressure pressure={weatherData.pressure} />
           </div>
           <div className="sun-temp-info">
-            <SunInfo sunrise={sunInfoData.sunriseTime} sunset={sunInfoData.sunsetTime} />
-            <TempInfo temp={tempData.temp}/>            
+            <TempInfo temp={tempData.temp}/>
+            <SunInfo sunrise={sunInfoData.sunriseTime} sunset={sunInfoData.sunsetTime} />             
           </div>
         </div>
       </div>
