@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 import "./WeatherApp.css";
 import search_icon2 from "../assets/search.svg";
 import clear_icon from "../assets/clear.png";
@@ -12,11 +14,15 @@ import Pressure from "./Pressure";
 import SunInfo from "./SunInfo";
 import TempInfo from "./TempInfo";
 
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 const WeatherApp = () => {
   const api_key = process.env.REACT_APP_API_KEY;
+  const api_key2 = process.env.REACT_APP_WEATHERBIT_API_KEY;
   const [wicon, setWicon] = useState(cloud_icon);
   const [is24HourFormat, setIs24HourFormat] = useState(true);
-  const [tempData, setTemp] = useState({
+  const [loading, setLoading] = useState(false);
+  const [tempData, setTemp] = useState({    
     temp: "",
   });
   const [sunInfoData, setSuninfo] = useState({
@@ -33,6 +39,8 @@ const WeatherApp = () => {
     currentDate: "",
     currentDay: "",
   });
+  // eslint-disable-next-line
+  const [lastSixDaysData, setLastSixDaysData] = useState([]);
 
   const element = useRef();
   useEffect(() => {
@@ -65,6 +73,52 @@ const WeatherApp = () => {
     }
   };
 
+  const downloadReport = async () => {
+    try {
+      const cityName = element.current.value;
+  
+      if (!cityName) {
+        console.error('City name is not provided.');
+        return;
+      }
+  
+      const lastSixDaysData = await fetchLastSixDaysWeather(cityName);
+  
+      const docDefinition = {
+        content: [
+          { text: 'Weather Report', fontSize: 16, bold: true },
+          { text: `City Name: ${cityName}`, margin: [0, 5, 0, 5] },
+          {
+            style: 'tableExample',
+            table: {
+              headerRows: 1,
+              widths: ['*', '*'],
+              body: [
+                ['Date', 'Temperature'],
+                ...lastSixDaysData.map((day) => [
+                  day.valid_date || 'Unknown',
+                  `${day.temp}°C` || 'Unknown',
+                ]),
+              ],
+            },
+          },
+        ],
+        // additional PDF styles if needed
+        styles: {
+          tableExample: {
+            margin: [0, 5, 0, 15],
+          },
+        },
+      };
+  
+      // create a PDF document and trigger download
+      pdfMake.createPdf(docDefinition).download('weather_report.pdf');
+    } catch (error) {
+      console.error('Error fetching last six days weather:', error);
+    }
+  };
+      
+  
   const formatDateTime = (date, is24HourFormat) => {
     try {
       const options = {
@@ -92,13 +146,13 @@ const WeatherApp = () => {
     if (element.current.value === "") {
       return 0;
     }
-
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${element.current.value}&units=Metric&appid=${api_key}`;
-
+    console.log("Current Weather URL:", url);
+  
     try {
-      let response = await fetch(url);
+       let response = await fetch(url);
+      console.log("Current Weather Response Status:", response.status);
       let data = await response.json();
-
       console.log("Weather API response:", data);
 
       setWeatherData({
@@ -125,9 +179,69 @@ const WeatherApp = () => {
       setIconWithIconID(data.weather[0].icon);
     } catch (error) {
       console.error("Error fetching weather data:", error);
+    }     
+  };
+     
+  const fetchLastSixDaysWeather = async (cityName) => {
+    const apiKey = api_key2;   
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+  
+    try {    
+      setLoading(true);
+      const coordUrl = `https://api.weatherbit.io/v2.0/current?city=${cityName}&key=${apiKey}`;
+      const coordResponse = await fetch(coordUrl, { headers });
+  
+      if (!coordResponse.ok) {
+        throw new Error(`Failed to fetch coordinates. Status: ${coordResponse.status}`);
+      }
+  
+      const coordData = await coordResponse.json();
+  
+      console.log("Coordinates API response:", coordData);
+  
+      if (!coordData || !coordData.data || !coordData.data[0] || !coordData.data[0].lat || !coordData.data[0].lon) {
+        throw new Error('Coordinates not available in the response.');
+      }
+  
+      const location = {
+        lat: coordData.data[0].lat,
+        lon: coordData.data[0].lon,
+      };
+  
+      // Step 2: Fetch last six days weather based on coordinates
+      const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${location.lat}&lon=${location.lon}&key=${apiKey}`;
+      const response = await fetch(url, { headers });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch weather data. Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+  
+      console.log("Weather API response:", data);
+  
+      if (data.data && data.data.length >= 7) {
+        const lastSixDaysWeather = data.data.slice(1, 7);
+        setLastSixDaysData(lastSixDaysWeather);
+  
+        return lastSixDaysWeather;
+      } 
+      else {
+        throw new Error("Unexpected response format from the weather API.");
+      }
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+      throw error;
+    }    
+    finally{
+      setLoading(false);
     }
   };
-
+  
+  
   const showWeatherCurrentLocation = useCallback(async () => {
     const geolocation = navigator.geolocation;
     if (!geolocation) return;
@@ -201,9 +315,15 @@ const WeatherApp = () => {
         >
           <img src={search_icon2} alt="search" />
         </div>
+        
+        <div className="report-buttons">
+          <button onClick={() => fetchLastSixDaysWeather(element.current.value)}>Fetch Report</button>
+          <button onClick={downloadReport}>Download Report</button>
+        </div>
       </div>
-
-      <div className="main-info">
+      <div className="loading">{loading && <p>Loading...</p>}</div>
+  
+      <div className="main-info">        
         <div>
           <div className="weather-image">
             <img src={wicon} alt="cloud" />
@@ -230,12 +350,12 @@ const WeatherApp = () => {
           </div>
           <div className="sun-temp-info">
             <TempInfo temp={tempData.temp}/>
-            <SunInfo sunrise={sunInfoData.sunriseTime} sunset={sunInfoData.sunsetTime} />
+            <SunInfo sunrise={sunInfoData.sunriseTime} sunset={sunInfoData.sunsetTime} />             
           </div>
         </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default WeatherApp;

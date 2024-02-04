@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React from "react";
 import "./WeatherApp.css";
 import humidity_icon2 from "../assets/humidity.svg";
 
