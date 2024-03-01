@@ -331,7 +331,8 @@ const WeatherApp = () => {
       <div className="loading">{loading && <p>Loading...</p>}</div>
 
       <div className="main-info">
-        <div>
+        {/* Left Side Icons */}
+        <div className="city-info">
           <div className="weather-image">
             <img src={wicon} alt="cloud" />
           </div>
@@ -342,24 +343,28 @@ const WeatherApp = () => {
               <button className="time-format-button" onClick={toggleTimeFormat}>
                 Toggle Time Format
               </button>
-              <p></p>
-              {weatherData.currentTime}
+              <br />
+              <br />
+             <p className="time">{weatherData.currentTime}</p>
             </div>
             <div className="weather-date title">{weatherData.currentDate}</div>
             <div className="weather-day title">{weatherData.currentDay}</div>
           </div>
         </div>
-        <div className="data-container">
-          <div className="weather-info">
+      
+         {/* Middle Side Icons */}
+         <div className="weather-data">
             <Humidity humidity={weatherData.humidity} />
             <WindSpeed windSpeed={weatherData.windSpeed} />
             <Pressure pressure={weatherData.pressure} />
           </div>
+
+           {/* Right Side Icons */}
           <div className="sun-temp-info">
             <TempInfo temp={tempData.temp} />
             <SunInfo sunrise={sunInfoData.sunriseTime} sunset={sunInfoData.sunsetTime} />
           </div>
-        </div>
+        
       </div>
       <ToastContainer />
     </div>
