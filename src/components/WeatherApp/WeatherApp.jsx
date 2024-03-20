@@ -18,8 +18,11 @@ import { ToastContainer, toast } from 'react-toastify';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const WeatherApp = () => {
+  // API keys
   const api_key = process.env.REACT_APP_API_KEY;
   const api_key2 = process.env.REACT_APP_WEATHERBIT_API_KEY;
+
+  // State variables
   const [wicon, setWicon] = useState(cloud_icon);
   const [is24HourFormat, setIs24HourFormat] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -43,17 +46,21 @@ const WeatherApp = () => {
   // eslint-disable-next-line
   const [lastSixDaysData, setLastSixDaysData] = useState([]);
 
+  //Ref
   const element = useRef();
+
   useEffect(() => {
     console.log(element.current);
   });
 
+  //Function to handle Enter key press
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       search();
     }
   };
 
+  // Function to set weather icon based on weather condition
   const setIconWithIconID = (iconID) => {
     if (iconID === "01d" || iconID === "01n") {
       setWicon(clear_icon);
@@ -73,7 +80,8 @@ const WeatherApp = () => {
       setWicon(clear_icon);
     }
   };
-
+  
+  // Function to download weather report
   const downloadReport = async () => {
     try {
       const cityName = element.current.value;
@@ -119,7 +127,7 @@ const WeatherApp = () => {
     }
   };
 
-
+  // Function to format date time
   const formatDateTime = (date, is24HourFormat) => {
     try {
       const options = {
@@ -134,7 +142,8 @@ const WeatherApp = () => {
       return "";
     }
   };
-
+  
+  // Function to toggle time format
   const toggleTimeFormat = () => {
     setIs24HourFormat((prevFormat) => !prevFormat);
     setWeatherData((prevData) => ({
@@ -142,13 +151,13 @@ const WeatherApp = () => {
       currentTime: formatDateTime(new Date(), !is24HourFormat),
     }));
   };
-
+  
+  // Function to search for weather
   const search = async () => {
     if (element.current.value === "") {
       return 0;
     }
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${element.current.value}&units=Metric&appid=${api_key}`;
-    console.log("Current Weather URL:", url);
 
     try {
       let response = await fetch(url);
@@ -157,10 +166,8 @@ const WeatherApp = () => {
         toast.error("City not found!");
         return;
       }
-
-      console.log("Current Weather Response Status:", response.status);
+      
       let data = await response.json();
-      console.log("Weather API response:", data);
 
       setWeatherData({
         humidity: data.main.humidity + "%",
@@ -188,7 +195,8 @@ const WeatherApp = () => {
       console.error("Error fetching weather data:", error);
     }
   };
-
+  
+  // Function to fetch last six days weather
   const fetchLastSixDaysWeather = async (cityName) => {
     const apiKey = api_key2;
     const headers = {
@@ -248,7 +256,7 @@ const WeatherApp = () => {
     }
   };
 
-
+   // Function to show weather for current location
   const showWeatherCurrentLocation = useCallback(async () => {
     const geolocation = navigator.geolocation;
     if (!geolocation) return;
@@ -287,11 +295,14 @@ const WeatherApp = () => {
         //   sunsetTime: sunData.results.sunset,
         // });
         setSuninfo({
-          sunriseTime: "",
-          sunsetTime: "",
+            ...SunInfo,
+            sunriseTime: new Date(data.sys.sunrise * 1000).toLocaleTimeString(),
+            sunsetTime: new Date(data.sys.sunset * 1000).toLocaleTimeString() ,
         });
+        //  Change the object of setTemp and put feels like data
         setTemp({
-          temp: "",
+            ...tempData,
+            temp: data.main.feels_like,
         });
         // after that delet below
       } catch (error) {
