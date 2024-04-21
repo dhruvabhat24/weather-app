@@ -42,6 +42,7 @@ const WeatherApp = () => {
   });
   // eslint-disable-next-line
   const [lastSixDaysData, setLastSixDaysData] = useState([]);
+  const [forecastData, setForecastData] = useState({});
 
   const element = useRef();
   useEffect(() => {
@@ -51,6 +52,7 @@ const WeatherApp = () => {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       search();
+      fetchForecast();
     }
   };
 
@@ -248,6 +250,56 @@ const WeatherApp = () => {
     }
   };
 
+  const fetchForecast = async () => {
+    if (element.current.value === "") {
+      return;
+    }
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${element.current.value}&units=Metric&appid=${api_key}`;
+    console.log("Current Forecast URL:", url);
+
+    try {
+      const response = await fetch(url);
+
+      if (response.status === 404) {
+        toast.error("City not found!");
+        return;
+      }
+
+      console.log("Current Weather Forecast Response Status:", response.status);
+      const data = await response.json();
+      console.log("Weather Forecast API response:", data);
+
+      let forecast = {};
+      data.list.forEach((datum) => {
+        let date = datum.dt_txt.split(' ')[0];
+        if (date in forecast) {
+          return;
+        }
+        let iconID = datum.weather[0].icon;
+        let icon = clear_icon;
+        if (iconID === "01d" || iconID === "01n") {
+          icon = clear_icon;
+        } else if (iconID === "02d" || iconID === "02n") {
+          icon = cloud_icon;
+        } else if (iconID === "03d" || iconID === "03n") {
+          icon = drizzle_icon;
+        } else if (iconID === "04d" || iconID === "04n") {
+          icon = drizzle_icon;
+        } else if (iconID === "09d" || iconID === "09n") {
+          icon = rain_icon;
+        } else if (iconID === "10d" || iconID === "10n") {
+          icon = rain_icon;
+        } else if (iconID === "13d" || iconID === "13n") {
+          icon = snow_icon;
+        }
+        forecast[date] = {'date': date, 'temp': datum.main.temp, 'icon': icon};
+      });
+      setForecastData(forecast);
+    } catch (error) {
+      console.error("Error fetching weather forecast data:", error);
+    }
+  };
+
 
   const showWeatherCurrentLocation = useCallback(async () => {
     const geolocation = navigator.geolocation;
@@ -255,6 +307,7 @@ const WeatherApp = () => {
 
     geolocation.getCurrentPosition(async (position) => {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=Metric&appid=${api_key}`;
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=Metric&appid=${api_key}`;
 
       try {
         const response = await fetch(url);
@@ -294,6 +347,43 @@ const WeatherApp = () => {
           temp: "",
         });
         // after that delet below
+
+        const forecastResponse = await fetch(forecastUrl);
+        if (forecastResponse.status === 404) {
+          toast.error("City not found!");
+          return;
+        }
+
+        console.log("Current Weather Forecast Response Status:", forecastResponse.status);
+        const forecastData = await forecastResponse.json();
+        console.log("Weather Forecast API response:", forecastData);
+
+        let forecast = {};
+        forecastData.list.forEach((datum) => {
+          let date = datum.dt_txt.split(' ')[0];
+          if (date in forecast) {
+            return;
+          }
+          let iconID = datum.weather[0].icon;
+          let icon = clear_icon;
+          if (iconID === "01d" || iconID === "01n") {
+            icon = clear_icon;
+          } else if (iconID === "02d" || iconID === "02n") {
+            icon = cloud_icon;
+          } else if (iconID === "03d" || iconID === "03n") {
+            icon = drizzle_icon;
+          } else if (iconID === "04d" || iconID === "04n") {
+            icon = drizzle_icon;
+          } else if (iconID === "09d" || iconID === "09n") {
+            icon = rain_icon;
+          } else if (iconID === "10d" || iconID === "10n") {
+            icon = rain_icon;
+          } else if (iconID === "13d" || iconID === "13n") {
+            icon = snow_icon;
+          }
+          forecast[date] = {'date': date, 'temp': datum.main.temp, 'icon': icon};
+        });
+        setForecastData(forecast);
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
@@ -305,69 +395,81 @@ const WeatherApp = () => {
   }, [showWeatherCurrentLocation]);
 
   return (
-    <div className="container">
-      <div className="top-bar">
-        <input
-          type="text"
-          className="cityInput"
-          placeholder="Search"
-          onKeyDown={handleKeyPress}
-          ref={element}
-        />
-        <div
-          className="search-icon"
-          onClick={() => {
-            search();
-          }}
-        >
-          <img src={search_icon2} alt="search" />
-        </div>
-
-        <div className="report-buttons">
-          <button onClick={() => fetchLastSixDaysWeather(element.current.value)}>Fetch Report</button>
-          <button onClick={downloadReport}>Download Report</button>
-        </div>
-      </div>
-      <div className="loading">{loading && <p>Loading...</p>}</div>
-
-      <div className="main-info">
-        {/* Left Side Icons */}
-        <div className="city-info">
-          <div className="weather-image">
-            <img src={wicon} alt="cloud" />
+      <div className="container">
+        <div className="top-bar">
+          <input
+              type="text"
+              className="cityInput"
+              placeholder="Search"
+              onKeyDown={handleKeyPress}
+              ref={element}
+          />
+          <div
+              className="search-icon"
+              onClick={() => {
+                search();
+                fetchForecast();
+              }}
+          >
+            <img src={search_icon2} alt="search" />
           </div>
-          <div className="weather-info">
-            <div className="weather-temp data">{weatherData.temperature}</div>
-            <div className="weather-location data">{weatherData.location}</div>
-            <div className="weather-time data">
-              <button className="time-format-button" onClick={toggleTimeFormat}>
-                Toggle Time Format
-              </button>
-              <br />
-              <br />
-             <p className="time">{weatherData.currentTime}</p>
+
+          <div className="report-buttons">
+            <button onClick={() => fetchLastSixDaysWeather(element.current.value)}>Fetch Report</button>
+            <button onClick={downloadReport}>Download Report</button>
+          </div>
+        </div>
+        <div className="loading">{loading && <p>Loading...</p>}</div>
+
+        <div className="main-info">
+          {/* Left Side Icons */}
+          <div className="city-info">
+            <div className="weather-image">
+              <img src={wicon} alt="cloud" />
             </div>
-            <div className="weather-date title">{weatherData.currentDate}</div>
-            <div className="weather-day title">{weatherData.currentDay}</div>
+            <div className="weather-info">
+              <div className="weather-temp data">{weatherData.temperature}</div>
+              <div className="weather-location data">{weatherData.location}</div>
+              <div className="weather-time data">
+                <button className="time-format-button" onClick={toggleTimeFormat}>
+                  Toggle Time Format
+                </button>
+                <br />
+                <br />
+                <p className="time">{weatherData.currentTime}</p>
+              </div>
+              <div className="weather-date title">{weatherData.currentDate}</div>
+              <div className="weather-day title">{weatherData.currentDay}</div>
+            </div>
           </div>
-        </div>
-      
-         {/* Middle Side Icons */}
-         <div className="weather-data">
+
+          {/* Middle Side Icons */}
+          <div className="weather-data">
             <Humidity humidity={weatherData.humidity} />
             <WindSpeed windSpeed={weatherData.windSpeed} />
             <Pressure pressure={weatherData.pressure} />
           </div>
 
-           {/* Right Side Icons */}
+          {/* Right Side Icons */}
           <div className="sun-temp-info">
             <TempInfo temp={tempData.temp} />
             <SunInfo sunrise={sunInfoData.sunriseTime} sunset={sunInfoData.sunsetTime} />
           </div>
-        
+
+          {/* Forecast */}
+          <div>
+            {Object.keys(forecastData).map((date) => (
+                <div key={date}>
+                  <img src={forecastData[date].icon} alt={`Weather icon for ${date}`} className="weather-image"/>
+                  <div className="weather-date title">{date}</div>
+                  <div className="weather-temp data">Temperature: {forecastData[date].temp}°C</div>
+                </div>
+            ))}
+          </div>
+
+        </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
-    </div>
   );
 };
 
