@@ -4,12 +4,12 @@
 }
 
 body {
-  background: linear-gradient(135deg, #6a92e6, #9b7ae5);
+  background: linear-gradient(135deg, #8bc6ec, #9d94ff);
 }
 
 .container {
-  background: linear-gradient(135deg,#71b7e6,#ed9fe5);
-  height: 700px;
+  background: linear-gradient(135deg, #b9e0ff, #d8b9ff);
+  height: 800px;
   width: 90%;
   border-radius: 40px;
   margin: 15px auto;
@@ -60,24 +60,25 @@ body {
 .report-buttons {
   display: flex;
   gap: 10px;
-  margin-top: 25px;  
+  margin-top: 25px;
   margin-left: 30px;
 }
 
 button {
   flex: 1;
-  padding: 10px;
-  background-color: #4caf50;  
+  padding: 15px 20px;
+  background-color: #6a92e6;
   color: white;
   border: none;
-  border-radius: 15px;
+  border-radius: 25px;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 1.2rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s ease;
 }
 
-.report-buttons button:hover {
-  background-color: #45a049;  
+button:hover {
+  background-color: #9b7ae5;
 }
 
 .main-info {
@@ -95,7 +96,7 @@ button {
 }
 
 .weather-image img {
-  width: 150px;
+  width: 200px;
 }
 
 .weather-info {
@@ -110,18 +111,18 @@ button {
 }
 
 .time-format-button {
-  background-color: #4caf50;  
-  color: white;  
-  padding: 10px;  
-  font-size: 17px;  
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  font-size: 17px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  border: none;  
-  border-radius: 15px;  
-  cursor: pointer;  
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
 }
 
 .time-format-button:hover {
-  background-color: #45a049;  
+  background-color: #45a049;
 }
 
 .weather-data {
@@ -140,7 +141,7 @@ button {
 }
 
 .weather-info > * {
-  margin-top: 10px; 
+  margin-top: 10px;
 }
 
 .element {
@@ -154,21 +155,25 @@ button {
 }
 
 .title {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: medium;
-  color: #00ff73;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.2rem;
+  color: #4d4d4d;
 }
 
 .data {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: large;
-  color: #eeff00;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.5rem;
+  color: #333333;
 }
 
-.loading{
+.loading {
   position: fixed;
   color: white;
   right: 50%;
+}
+
+.spacing {
+  margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 600px) {
