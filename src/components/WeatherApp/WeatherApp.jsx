@@ -13,7 +13,7 @@ import WindSpeed from "./WindSpeed";
 import Pressure from "./Pressure";
 import SunInfo from "./SunInfo";
 import TempInfo from "./TempInfo";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -44,9 +44,6 @@ const WeatherApp = () => {
   const [lastSixDaysData, setLastSixDaysData] = useState([]);
 
   const element = useRef();
-  useEffect(() => {
-    console.log(element.current);
-  });
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -79,7 +76,7 @@ const WeatherApp = () => {
       const cityName = element.current.value;
 
       if (!cityName) {
-        console.error('City name is not provided.');
+        console.error("City name is not provided.");
         return;
       }
 
@@ -87,18 +84,18 @@ const WeatherApp = () => {
 
       const docDefinition = {
         content: [
-          { text: 'Weather Report', fontSize: 16, bold: true },
+          { text: "Weather Report", fontSize: 16, bold: true },
           { text: `City Name: ${cityName}`, margin: [0, 5, 0, 5] },
           {
-            style: 'tableExample',
+            style: "tableExample",
             table: {
               headerRows: 1,
-              widths: ['*', '*'],
+              widths: ["*", "*"],
               body: [
-                ['Date', 'Temperature'],
+                ["Date", "Temperature"],
                 ...lastSixDaysData.map((day) => [
-                  day.valid_date || 'Unknown',
-                  `${day.temp}°C` || 'Unknown',
+                  day.valid_date || "Unknown",
+                  `${day.temp}°C` || "Unknown",
                 ]),
               ],
             },
@@ -113,12 +110,11 @@ const WeatherApp = () => {
       };
 
       // create a PDF document and trigger download
-      pdfMake.createPdf(docDefinition).download('weather_report.pdf');
+      pdfMake.createPdf(docDefinition).download("weather_report.pdf");
     } catch (error) {
-      console.error('Error fetching last six days weather:', error);
+      console.error("Error fetching last six days weather:", error);
     }
   };
-
 
   const formatDateTime = (date, is24HourFormat) => {
     try {
@@ -148,7 +144,6 @@ const WeatherApp = () => {
       return 0;
     }
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${element.current.value}&units=Metric&appid=${api_key}`;
-    console.log("Current Weather URL:", url);
 
     try {
       let response = await fetch(url);
@@ -158,9 +153,7 @@ const WeatherApp = () => {
         return;
       }
 
-      console.log("Current Weather Response Status:", response.status);
       let data = await response.json();
-      console.log("Weather API response:", data);
 
       setWeatherData({
         humidity: data.main.humidity + "%",
@@ -192,8 +185,8 @@ const WeatherApp = () => {
   const fetchLastSixDaysWeather = async (cityName) => {
     const apiKey = api_key2;
     const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
     };
 
     try {
@@ -202,15 +195,21 @@ const WeatherApp = () => {
       const coordResponse = await fetch(coordUrl, { headers });
 
       if (!coordResponse.ok) {
-        throw new Error(`Failed to fetch coordinates. Status: ${coordResponse.status}`);
+        throw new Error(
+          `Failed to fetch coordinates. Status: ${coordResponse.status}`,
+        );
       }
 
       const coordData = await coordResponse.json();
 
-      console.log("Coordinates API response:", coordData);
-
-      if (!coordData || !coordData.data || !coordData.data[0] || !coordData.data[0].lat || !coordData.data[0].lon) {
-        throw new Error('Coordinates not available in the response.');
+      if (
+        !coordData ||
+        !coordData.data ||
+        !coordData.data[0] ||
+        !coordData.data[0].lat ||
+        !coordData.data[0].lon
+      ) {
+        throw new Error("Coordinates not available in the response.");
       }
 
       const location = {
@@ -223,31 +222,28 @@ const WeatherApp = () => {
       const response = await fetch(url, { headers });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch weather data. Status: ${response.status}`);
+        throw new Error(
+          `Failed to fetch weather data. Status: ${response.status}`,
+        );
       }
 
       const data = await response.json();
-
-      console.log("Weather API response:", data);
 
       if (data.data && data.data.length >= 7) {
         const lastSixDaysWeather = data.data.slice(1, 7);
         setLastSixDaysData(lastSixDaysWeather);
 
         return lastSixDaysWeather;
-      }
-      else {
+      } else {
         throw new Error("Unexpected response format from the weather API.");
       }
     } catch (error) {
       console.error("Error fetching weather data:", error);
       throw error;
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
-
 
   const showWeatherCurrentLocation = useCallback(async () => {
     const geolocation = navigator.geolocation;
@@ -259,8 +255,6 @@ const WeatherApp = () => {
       try {
         const response = await fetch(url);
         const data = await response.json();
-
-        console.log("Weather API response:", data);
 
         setWeatherData({
           humidity: data.main.humidity + "%",
@@ -324,7 +318,11 @@ const WeatherApp = () => {
         </div>
 
         <div className="report-buttons">
-          <button onClick={() => fetchLastSixDaysWeather(element.current.value)}>Fetch Report</button>
+          <button
+            onClick={() => fetchLastSixDaysWeather(element.current.value)}
+          >
+            Fetch Report
+          </button>
           <button onClick={downloadReport}>Download Report</button>
         </div>
       </div>
@@ -345,26 +343,28 @@ const WeatherApp = () => {
               </button>
               <br />
               <br />
-             <p className="time">{weatherData.currentTime}</p>
+              <p className="time">{weatherData.currentTime}</p>
             </div>
             <div className="weather-date title">{weatherData.currentDate}</div>
             <div className="weather-day title">{weatherData.currentDay}</div>
           </div>
         </div>
-      
-         {/* Middle Side Icons */}
-         <div className="weather-data">
-            <Humidity humidity={weatherData.humidity} />
-            <WindSpeed windSpeed={weatherData.windSpeed} />
-            <Pressure pressure={weatherData.pressure} />
-          </div>
 
-           {/* Right Side Icons */}
-          <div className="sun-temp-info">
-            <TempInfo temp={tempData.temp} />
-            <SunInfo sunrise={sunInfoData.sunriseTime} sunset={sunInfoData.sunsetTime} />
-          </div>
-        
+        {/* Middle Side Icons */}
+        <div className="weather-data">
+          <Humidity humidity={weatherData.humidity} />
+          <WindSpeed windSpeed={weatherData.windSpeed} />
+          <Pressure pressure={weatherData.pressure} />
+        </div>
+
+        {/* Right Side Icons */}
+        <div className="sun-temp-info">
+          <TempInfo temp={tempData.temp} />
+          <SunInfo
+            sunrise={sunInfoData.sunriseTime}
+            sunset={sunInfoData.sunsetTime}
+          />
+        </div>
       </div>
       <ToastContainer />
     </div>
