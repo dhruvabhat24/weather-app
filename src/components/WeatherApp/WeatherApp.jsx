@@ -1,19 +1,19 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-import "./WeatherApp.css";
-import search_icon2 from "../assets/search.svg";
-import clear_icon from "../assets/clear.png";
-import cloud_icon from "../assets/cloud.png";
-import rain_icon from "../assets/rain.png";
-import snow_icon from "../assets/snow.png";
-import drizzle_icon from "../assets/drizzle.png";
-import Humidity from "./Humidity";
-import WindSpeed from "./WindSpeed";
-import Pressure from "./Pressure";
-import SunInfo from "./SunInfo";
-import TempInfo from "./TempInfo";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import './WeatherApp.css';
+import search_icon2 from '../assets/search.svg';
+import clear_icon from '../assets/clear.png';
+import cloud_icon from '../assets/cloud.png';
+import rain_icon from '../assets/rain.png';
+import snow_icon from '../assets/snow.png';
+import drizzle_icon from '../assets/drizzle.png';
+import Humidity from './Humidity';
+import WindSpeed from './WindSpeed';
+import Pressure from './Pressure';
+import SunInfo from './SunInfo';
+import TempInfo from './TempInfo';
+import { ToastContainer, toast } from 'react-toastify';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -24,21 +24,21 @@ const WeatherApp = () => {
   const [is24HourFormat, setIs24HourFormat] = useState(true);
   const [loading, setLoading] = useState(false);
   const [tempData, setTemp] = useState({
-    temp: "",
+    temp: '',
   });
   const [sunInfoData, setSuninfo] = useState({
-    sunriseTime: "",
-    sunsetTime: "",
+    sunriseTime: '',
+    sunsetTime: '',
   });
   const [weatherData, setWeatherData] = useState({
-    humidity: "",
-    windSpeed: "",
-    pressure: "",
-    temperature: "",
-    location: "",
-    currentTime: "",
-    currentDate: "",
-    currentDay: "",
+    humidity: '',
+    windSpeed: '',
+    pressure: '',
+    temperature: '',
+    location: '',
+    currentTime: '',
+    currentDate: '',
+    currentDay: '',
   });
   // eslint-disable-next-line
   const [lastSixDaysData, setLastSixDaysData] = useState([]);
@@ -46,25 +46,25 @@ const WeatherApp = () => {
   const element = useRef();
 
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       search();
     }
   };
 
   const setIconWithIconID = (iconID) => {
-    if (iconID === "01d" || iconID === "01n") {
+    if (iconID === '01d' || iconID === '01n') {
       setWicon(clear_icon);
-    } else if (iconID === "02d" || iconID === "02n") {
+    } else if (iconID === '02d' || iconID === '02n') {
       setWicon(cloud_icon);
-    } else if (iconID === "03d" || iconID === "03n") {
+    } else if (iconID === '03d' || iconID === '03n') {
       setWicon(drizzle_icon);
-    } else if (iconID === "04d" || iconID === "04n") {
+    } else if (iconID === '04d' || iconID === '04n') {
       setWicon(drizzle_icon);
-    } else if (iconID === "09d" || iconID === "09n") {
+    } else if (iconID === '09d' || iconID === '09n') {
       setWicon(rain_icon);
-    } else if (iconID === "10d" || iconID === "10n") {
+    } else if (iconID === '10d' || iconID === '10n') {
       setWicon(rain_icon);
-    } else if (iconID === "13d" || iconID === "13n") {
+    } else if (iconID === '13d' || iconID === '13n') {
       setWicon(snow_icon);
     } else {
       setWicon(clear_icon);
@@ -76,7 +76,7 @@ const WeatherApp = () => {
       const cityName = element.current.value;
 
       if (!cityName) {
-        console.error("City name is not provided.");
+        console.error('City name is not provided.');
         return;
       }
 
@@ -84,18 +84,18 @@ const WeatherApp = () => {
 
       const docDefinition = {
         content: [
-          { text: "Weather Report", fontSize: 16, bold: true },
+          { text: 'Weather Report', fontSize: 16, bold: true },
           { text: `City Name: ${cityName}`, margin: [0, 5, 0, 5] },
           {
-            style: "tableExample",
+            style: 'tableExample',
             table: {
               headerRows: 1,
-              widths: ["*", "*"],
+              widths: ['*', '*'],
               body: [
-                ["Date", "Temperature"],
+                ['Date', 'Temperature'],
                 ...lastSixDaysData.map((day) => [
-                  day.valid_date || "Unknown",
-                  `${day.temp}°C` || "Unknown",
+                  day.valid_date || 'Unknown',
+                  `${day.temp}°C` || 'Unknown',
                 ]),
               ],
             },
@@ -110,24 +110,24 @@ const WeatherApp = () => {
       };
 
       // create a PDF document and trigger download
-      pdfMake.createPdf(docDefinition).download("weather_report.pdf");
+      pdfMake.createPdf(docDefinition).download('weather_report.pdf');
     } catch (error) {
-      console.error("Error fetching last six days weather:", error);
+      console.error('Error fetching last six days weather:', error);
     }
   };
 
   const formatDateTime = (date, is24HourFormat) => {
     try {
       const options = {
-        hour: "numeric",
-        minute: "numeric",
+        hour: 'numeric',
+        minute: 'numeric',
         hour12: !is24HourFormat,
       };
 
       return date.toLocaleString(undefined, options);
     } catch (error) {
-      console.error("Error formatting date:", error);
-      return "";
+      console.error('Error formatting date:', error);
+      return '';
     }
   };
 
@@ -140,7 +140,7 @@ const WeatherApp = () => {
   };
 
   const search = async () => {
-    if (element.current.value === "") {
+    if (element.current.value === '') {
       return 0;
     }
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${element.current.value}&units=Metric&appid=${api_key}`;
@@ -149,44 +149,44 @@ const WeatherApp = () => {
       let response = await fetch(url);
 
       if (response.status === 404) {
-        toast.error("City not found!");
+        toast.error('City not found!');
         return;
       }
 
       let data = await response.json();
 
       setWeatherData({
-        humidity: data.main.humidity + "%",
-        windSpeed: Math.floor(data.wind.speed) + "km/h",
-        pressure: data.main.pressure + " hPA",
-        temperature: Math.floor(data.main.temp) + "°C",
+        humidity: data.main.humidity + '%',
+        windSpeed: Math.floor(data.wind.speed) + 'km/h',
+        pressure: data.main.pressure + ' hPA',
+        temperature: Math.floor(data.main.temp) + '°C',
         location: data.name,
         timezone: data.timezone,
         currentTime: formatDateTime(new Date(data.dt * 1000), is24HourFormat),
         currentDate: new Date(data.dt * 1000).toLocaleDateString(),
-        currentDay: new Date(data.dt * 1000).toLocaleDateString("en-US", {
-          weekday: "long",
+        currentDay: new Date(data.dt * 1000).toLocaleDateString('en-US', {
+          weekday: 'long',
         }),
       });
       setSuninfo({
-        sunriseTime: "6:45",
-        sunsetTime: "6:10",
+        sunriseTime: '6:45',
+        sunsetTime: '6:10',
       });
       setTemp({
-        temp: "4°C",
+        temp: '4°C',
       });
 
       setIconWithIconID(data.weather[0].icon);
     } catch (error) {
-      console.error("Error fetching weather data:", error);
+      console.error('Error fetching weather data:', error);
     }
   };
 
   const fetchLastSixDaysWeather = async (cityName) => {
     const apiKey = api_key2;
     const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     };
 
     try {
@@ -209,7 +209,7 @@ const WeatherApp = () => {
         !coordData.data[0].lat ||
         !coordData.data[0].lon
       ) {
-        throw new Error("Coordinates not available in the response.");
+        throw new Error('Coordinates not available in the response.');
       }
 
       const location = {
@@ -235,10 +235,10 @@ const WeatherApp = () => {
 
         return lastSixDaysWeather;
       } else {
-        throw new Error("Unexpected response format from the weather API.");
+        throw new Error('Unexpected response format from the weather API.');
       }
     } catch (error) {
-      console.error("Error fetching weather data:", error);
+      console.error('Error fetching weather data:', error);
       throw error;
     } finally {
       setLoading(false);
@@ -257,16 +257,16 @@ const WeatherApp = () => {
         const data = await response.json();
 
         setWeatherData({
-          humidity: data.main.humidity + "%",
-          windSpeed: Math.floor(data.wind.speed) + "km/h",
-          pressure: data.main.pressure + " hPA",
-          temperature: Math.floor(data.main.temp) + "°C",
+          humidity: data.main.humidity + '%',
+          windSpeed: Math.floor(data.wind.speed) + 'km/h',
+          pressure: data.main.pressure + ' hPA',
+          temperature: Math.floor(data.main.temp) + '°C',
           location: data.name,
           timezone: data.timezone,
           currentTime: new Date(data.dt * 1000).toLocaleTimeString(),
           currentDate: new Date(data.dt * 1000).toLocaleDateString(),
-          currentDay: new Date(data.dt * 1000).toLocaleDateString("en-US", {
-            weekday: "long",
+          currentDay: new Date(data.dt * 1000).toLocaleDateString('en-US', {
+            weekday: 'long',
           }),
         });
 
@@ -281,15 +281,15 @@ const WeatherApp = () => {
         //   sunsetTime: sunData.results.sunset,
         // });
         setSuninfo({
-          sunriseTime: "",
-          sunsetTime: "",
+          sunriseTime: '',
+          sunsetTime: '',
         });
         setTemp({
-          temp: "",
+          temp: '',
         });
         // after that delet below
       } catch (error) {
-        console.error("Error fetching weather data:", error);
+        console.error('Error fetching weather data:', error);
       }
     });
   }, [api_key]);
